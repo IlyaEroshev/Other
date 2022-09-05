@@ -4,8 +4,8 @@
 #include <iostream>
 
 class String {
-	size_t size_ = 0u;
-	size_t capacity_ = 0u;//может уменьшиться только при присваивании, всегда равна степени 2
+	size_t size_ = 0;
+	size_t capacity_ = 0;//может уменьшиться только при присваивании, всегда равна степени 2
 	char *data_ = nullptr;
 
 public:
@@ -60,6 +60,12 @@ public:
 	char& back();
 
 	char back() const;
+
+	String substr(size_t, size_t) const;
+
+	long find(const String&) const;//первое вхождение слева, реализация КМП (-1 если не нашел)
+
+	long rfind(const String&) const;//первое вхождение справа, реализация хеш (-1 если не нашел)
 
 	~String();
 };
