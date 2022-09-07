@@ -252,7 +252,7 @@ std::istream& operator>>(std::istream &s, String &str) {
 	str.clear();
 	char c;
 	s.get(c);
-	while(!iscntrl(c)) {
+	while(!iscntrl(c) && !isspace(c)) {
 		str.push_back(c);
 		s.get(c);
 	}
