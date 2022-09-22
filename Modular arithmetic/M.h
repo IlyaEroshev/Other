@@ -1,22 +1,22 @@
 #ifndef OTHER_M_H
 #define OTHER_M_H
 
-struct M;
+#include <iostream>
 
-M pow(const M &a, ull d);
+class M;
 
-struct M {
-	typedef unsigned long long ull;
-	typedef unsigned long ul;
-	static const ul mod = 1000000007ul;
-	//ull можно заменить на __int128
-	ull value = 0ul;
+M pow(const M&, uint64_t);
+
+class M {//uint64_t можно заменить на __int128
+	uint64_t value = 0ul;
+public:
+	static uint32_t mod;//модуль
 
 	M() = default;
 
-	M(ull value): value(value) {}
+	explicit M(uint64_t value): value(value % mod) {}
 
-	operator unsigned long long() const {
+	operator uint64_t() const {
 		return value;
 	}
 
@@ -42,7 +42,11 @@ struct M {
 		M inv_a = pow(a, mod - 2);
 		return *this *= inv_a;
 	}
+
+	friend std::istream& operator>>(std::istream&, M&);
 };
+
+uint32_t M::mod = 1'000'000'007;
 
 M operator+(const M &a, const M &b) {
 	M res = a;
@@ -68,8 +72,8 @@ M operator/(const M &a, const M &b) {
 	return res;
 }
 
-M pow(const M &a, ull d) {
-	if(!d) return 1ul % M::mod;
+M pow(const M &a, uint64_t d) {
+	if(!d) return M(1);
 	M res = pow(a, d >> 1);
 	res *= res;
 	if(d & 1u) res *= a;
@@ -82,4 +86,4 @@ std::istream& operator>>(std::istream &in, M &a) {
 	return in;
 }
 
-#endif //OTHER_M_H
+#endif
