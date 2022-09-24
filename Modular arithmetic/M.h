@@ -5,12 +5,12 @@
 
 class M;
 
-M pow(const M&, uint64_t);
+M pow(M, uint64_t);
 
 class M {//uint64_t можно заменить на __int128
 	uint64_t value = 0ul;
 public:
-	static uint32_t mod;//модуль
+	static uint32_t mod;//модуль только простое число
 
 	M() = default;
 
@@ -72,11 +72,14 @@ M operator/(const M &a, const M &b) {
 	return res;
 }
 
-M pow(const M &a, uint64_t d) {
-	if(!d) return M(1);
-	M res = pow(a, d >> 1);
-	res *= res;
-	if(d & 1u) res *= a;
+M pow(M a, uint64_t d) {
+	M res = (d & 1u) ? a : M(1);
+	d >>= 1;
+	while(d) {
+		a *= a;
+		if(d & 1u) res *= a;
+		d >>= 1;
+	}
 	return res;
 }
 
