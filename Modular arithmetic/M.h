@@ -1,22 +1,23 @@
-#ifndef OTHER_M_H
-#define OTHER_M_H
-
 #include <iostream>
+#include <vector>
 
-class M;
-
-M pow(M, uint64_t);
-
-class M {//uint64_t можно заменить на __int128
-	uint64_t value = 0ul;
+template <uint32_t mod>
+class M{//uint64_t можно заменить на __int128
+	uint64_t value;
 public:
-	static uint32_t mod;//модуль только простое число
+	M(): value(0ull) {}
 
-	M() = default;
+	M(long long value) {
+		value %= mod;
+		if(value < 0) value += mod;
+		this->value = value;
+	}
 
-	explicit M(uint64_t value): value(value % mod) {}
+	uint32_t get_mod() const {
+		return mod;
+	}
 
-	operator uint64_t() const {
+	uint64_t get_value() const {
 		return value;
 	}
 
@@ -43,37 +44,53 @@ public:
 		return *this *= inv_a;
 	}
 
-	friend std::istream& operator>>(std::istream&, M&);
+	inline static M F(long n) {//факториал n
+		static std::vector<M> fucts(2, 1);
+		if(fucts.size() < n)
+			fucts.push_back(F(n-1));
+		return fucts[n];
+	}
+
+	inline static M A(long n, long k) {//кол-во размещений из n по k
+		return F(n) / F(n-k);
+	}
+
+	inline static M C(long n, long k) {//кол-во сочетаний из n по k
+		return F(n) / (F(k) * F(n-k));
+	}
 };
 
-uint32_t M::mod = 1'000'000'007;
-
-M operator+(const M &a, const M &b) {
-	M res = a;
+template <uint32_t mod>
+M<mod> operator+(const M<mod> &a, const M<mod> &b) {
+	M<mod> res = a;
 	res += b;
 	return res;
 }
 
-M operator-(const M &a, const M &b) {
-	M res = a;
+template <uint32_t mod>
+M<mod> operator-(const M<mod> &a, const M<mod> &b) {
+	M<mod> res = a;
 	res -= b;
 	return res;
 }
 
-M operator*(const M &a, const M &b) {
-	M res = a;
+template <uint32_t mod>
+M<mod> operator*(const M<mod> &a, const M<mod> &b) {
+	M<mod> res = a;
 	res *= b;
 	return res;
 }
 
-M operator/(const M &a, const M &b) {
-	M res = a;
+template <uint32_t mod>
+M<mod> operator/(const M<mod> &a, const M<mod> &b) {
+	M<mod> res = a;
 	res /= b;
 	return res;
 }
 
-M pow(M a, uint64_t d) {
-	M res = (d & 1u) ? a : M(1);
+template <uint32_t mod>
+M<mod> pow(M<mod> a, uint64_t d) {
+	M<mod> res = (d & 1u) ? a : M<mod>(1);
 	d >>= 1;
 	while(d) {
 		a *= a;
@@ -83,10 +100,15 @@ M pow(M a, uint64_t d) {
 	return res;
 }
 
-std::istream& operator>>(std::istream &in, M &a) {
-	in >> a.value;
-	a.value %= M::mod;
+template <uint32_t mod>
+std::istream& operator>>(std::istream &in, M<mod> &a) {
+	long long value;
+	in >> value;
+	a = M<mod>(value);
 	return in;
 }
 
-#endif
+template <uint32_t mod>
+std::ostream& operator<<(std::ostream &out, const M<mod> &a) {
+	return out << a.get_value();
+}

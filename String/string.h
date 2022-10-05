@@ -19,47 +19,49 @@ public:
 
 	String(const String&);
 
+	String(std::initializer_list<char>);
+
 private:
 	void expand(size_t);//увеличивает capacity
 
 public:
-	size_t size() const;
+	inline size_t size() const;
 
-	size_t capacity() const;
+	inline size_t capacity() const;
 
-	bool empty() const;
+	inline bool empty() const;
 
-	void swap(String&);
+	inline void swap(String&);
 
-	void resize(size_t);
+	inline void resize(size_t);
 
-	void resize(size_t, char);
+	inline void resize(size_t, char);
 
-	String& operator=(const String&);
+	inline String& operator=(const String&);
 
-	String& operator+=(const String&);
+	inline String& operator+=(const String&);
 
-	friend bool operator<(const String&, const String&);
+	friend inline bool operator<(const String&, const String&);
 
-	friend bool operator==(const String&, const String&);
+	friend inline bool operator==(const String&, const String&);
 
-	void push_back(char);
+	inline void push_back(char);
 
-	void pop_back();
+	inline void pop_back();
 
-	void clear();
+	inline void clear();
 
-	char& operator[](size_t);
+	inline char& operator[](size_t);
 
-	char operator[](size_t) const;
+	inline char operator[](size_t) const;
 
-	char& front();
+	inline char& front();
 
-	char front() const;
+	inline char front() const;
 
-	char& back();
+	inline char& back();
 
-	char back() const;
+	inline char back() const;
 
 	String substr(size_t, size_t) const;
 
@@ -70,22 +72,22 @@ public:
 	~String();
 };
 
-std::istream& operator>>(std::istream&, String&);
+inline std::istream& operator>>(std::istream&, String&);
 
-std::ostream& operator<<(std::ostream&, const String&);
+inline std::ostream& operator<<(std::ostream&, const String&);
 
-String operator+(const String&, const String&);
+inline String operator+(const String&, const String&);
 
 bool operator<(const String&, const String&);
 
-bool operator>(const String&, const String&);
+inline bool operator>(const String&, const String&);
 
 bool operator==(const String&, const String&);
 
-bool operator!=(const String&, const String&);
+inline bool operator!=(const String&, const String&);
 
-bool operator<=(const String&, const String&);
+inline bool operator<=(const String&, const String&);
 
-bool operator>=(const String&, const String&);
+inline bool operator>=(const String&, const String&);
 
 #endif

@@ -22,6 +22,10 @@ String::String(const String &s): size_(s.size_), capacity_(s.capacity_), data_(n
 	std::memcpy(data_, s.data_, size_);
 }
 
+String::String(std::initializer_list<char> lst): size_(lst.size()), data_(new char[size_]) {
+std::copy(lst.begin(), lst.end(), data_);
+}
+
 void String::expand(size_t new_size) {
 	if(capacity_ >= new_size) return;
 	if(!capacity_) capacity_ = 8u;
